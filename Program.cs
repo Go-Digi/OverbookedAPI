@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using DataSet = Overbookedapi.Data.DataSet;
+using Overbookedapi.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IUserActivityLogger, UserActivityLogger>();
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 builder.Services.AddDbContext<DataSet>(options =>

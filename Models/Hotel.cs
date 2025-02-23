@@ -7,5 +7,7 @@ public class Hotel
     // public string HotelLogoUrl {get;set;}
     
     public List<RoomType> RoomTypes { get; set; }
+    public List<User> Users { get; set; }
+
 
 }
