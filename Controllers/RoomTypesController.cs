@@ -17,7 +17,7 @@ public class RoomTypesController : ControllerBase
     private readonly DataSet _context;
     private readonly IUserActivityLogger _userActivityLogger;
 
-    public RoomTypesController(DataSet context, UserActivityLogger userActivityLogger)
+    public RoomTypesController(DataSet context, IUserActivityLogger userActivityLogger)
     {
         _context = context;
         _userActivityLogger = userActivityLogger;
