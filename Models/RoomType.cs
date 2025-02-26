@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Overbookedapi.Models;
 
 public class RoomType
@@ -8,6 +10,7 @@ public class RoomType
     public int MaxCapacity { get; set; }
     public int HotelId { get; set; }
     
+    [JsonIgnore]
     public Hotel Hotel { get; set; }
     public List<RoomRate> RoomRates { get; set; } = new();
 }

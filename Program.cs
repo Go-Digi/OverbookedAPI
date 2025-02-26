@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowCredentials());
 });
-
+//TODO: ADD JWT AND CACHING SERVICE
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
