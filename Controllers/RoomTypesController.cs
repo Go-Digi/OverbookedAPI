@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Overbookedapi.Models;
+using Overbookedapi.Models.DTO;
 using Overbookedapi.Data;
 using Overbookedapi.Utils;
 
@@ -43,11 +44,30 @@ public class RoomTypesController : ControllerBase
     }
     
     
-    // TODO: POST NEED TO HANDLE ROOM RATES ALSO
+    // LET'S START WITH A SINGLE ROOM RATE FOR NOW
     [HttpPost]
-    public async Task<ActionResult<RoomType>> CreateRoomType(RoomType roomType)
+    public async Task<ActionResult<RoomType>> CreateRoomType(RoomTypeDTO newRoomType)
     {
+
+        newRoomType.RoomTypeId ??= Guid.NewGuid();
+        var roomType = new RoomType()
+        {
+            RoomTypeId = (Guid)newRoomType.RoomTypeId,
+            RoomTypeName = newRoomType.RoomTypeName,
+            RoomCount = newRoomType.RoomCount,
+            MaxCapacity = newRoomType.MaxCapacity,
+            HotelId = newRoomType.HotelId,
+        };
         _context.RoomTypes.Add(roomType);
+
+        var roomRates = new RoomRate()
+        {
+            RoomTypeId = roomType.RoomTypeId,
+            RoomRateName = "Default",
+            Price = newRoomType.Price,
+        };
+        _context.RoomRates.Add(roomRates);
+        
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetRoomType), new { id = roomType.RoomTypeId }, roomType);

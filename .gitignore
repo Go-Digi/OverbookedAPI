@@ -2,3 +2,7 @@
 /obj/Debug
 /obj
 /obj
+.DS_Store
+.DS_Store
+/obj/Debug
+obj/Debug/net8.0/Overbookedapi.AssemblyInfo.cs
