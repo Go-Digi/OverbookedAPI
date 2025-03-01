@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/nestordesabillejr/Documents/Overbooked/v2/OverbookedAPI/Overbookedapi.csproj": {}
+    "/Users/wayne/Documents/Projects/go-digi/OverbookedAPI/Overbookedapi.csproj": {}
   },
   "projects": {
-    "/Users/nestordesabillejr/Documents/Overbooked/v2/OverbookedAPI/Overbookedapi.csproj": {
+    "/Users/wayne/Documents/Projects/go-digi/OverbookedAPI/Overbookedapi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/nestordesabillejr/Documents/Overbooked/v2/OverbookedAPI/Overbookedapi.csproj",
+        "projectUniqueName": "/Users/wayne/Documents/Projects/go-digi/OverbookedAPI/Overbookedapi.csproj",
         "projectName": "Overbookedapi",
-        "projectPath": "/Users/nestordesabillejr/Documents/Overbooked/v2/OverbookedAPI/Overbookedapi.csproj",
-        "packagesPath": "/Users/nestordesabillejr/.nuget/packages/",
-        "outputPath": "/Users/nestordesabillejr/Documents/Overbooked/v2/OverbookedAPI/obj/",
+        "projectPath": "/Users/wayne/Documents/Projects/go-digi/OverbookedAPI/Overbookedapi.csproj",
+        "packagesPath": "/Users/wayne/.nuget/packages/",
+        "outputPath": "/Users/wayne/Documents/Projects/go-digi/OverbookedAPI/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/nestordesabillejr/.nuget/NuGet/NuGet.Config"
+          "/Users/wayne/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -79,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.406/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
