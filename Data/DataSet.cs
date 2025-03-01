@@ -14,6 +14,7 @@ public class DataSet : DbContext
     public virtual DbSet<UserActivityLog> UserActivityLogs { get; set; }
     public virtual DbSet<RoomType> RoomTypes { get; set; }
     public virtual DbSet<RoomRate> RoomRates { get; set; }
+    public virtual DbSet<BlockedDate> BlockedDates { get; set; }
     
 
 
@@ -35,6 +36,11 @@ public class DataSet : DbContext
         // room type model
         modelBuilder.Entity<RoomType>()
             .HasMany(g => g.RoomRates)
+            .WithOne(g => g.RoomType)
+            .HasForeignKey(g => g.RoomTypeId)
+            .IsRequired();
+        modelBuilder.Entity<RoomType>()
+            .HasMany(g => g.BlockedDates)
             .WithOne(g => g.RoomType)
             .HasForeignKey(g => g.RoomTypeId)
             .IsRequired();

@@ -13,4 +13,5 @@ public class RoomType
     [JsonIgnore]
     public Hotel Hotel { get; set; }
     public List<RoomRate> RoomRates { get; set; } = new();
+    public List<BlockedDate> BlockedDates { get; set; } = new();
 }

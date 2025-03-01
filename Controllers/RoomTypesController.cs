@@ -126,8 +126,88 @@ public class RoomTypesController : ControllerBase
 
         return Ok();
     }
-    
-    
+
+    [HttpGet("{roomTypeId}/availability")]
+    public async Task<ActionResult<List<Availability>>> GetAvailability(Guid roomTypeId, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+    {
+        if (startDate == null || endDate == null)
+        {
+            return BadRequest("Please provide valid dates");
+        }
+
+        if (startDate > endDate)
+        {
+            return BadRequest("End date cannot be earlier than start date");
+        }
+        
+        var blockedDates = await _context.BlockedDates.Where(x => x.Date >= startDate && 
+                                                                                x.Date <= endDate &&
+                                                                                x.RoomTypeId == roomTypeId)
+                                                                        .ToListAsync();
+         var roomType = await _context.RoomTypes.FirstOrDefaultAsync(rt => rt.RoomTypeId == roomTypeId);
+         if (roomType == null) { return NotFound("Room type not found"); }
+         // TODO: query bookings
+
+         var availabilities = new List<Availability>();
+         var dateDiff = endDate - startDate;
+         var days = dateDiff?.Days ?? 0;
+         for (int i = 0; i <= days; i++)
+         {
+             var currDate = startDate?.AddDays(i);
+             var blockedDate = blockedDates.FirstOrDefault(x => x.Date == currDate);
+             var availability = GetAvailability(roomType, (DateTime)currDate, blockedDate);
+             availabilities.Add(availability);
+         }
+
+         return Ok(availabilities);
+    }
+    private static Availability GetAvailability(RoomType roomType, DateTime queryDate, BlockedDate? blockedDate)
+    {
+        // TODO: query bookings
+        
+        var blockedDateCount = blockedDate?.RoomCount ?? 0;
+        var availability = new Availability()
+        {
+            AvailabilityDate = queryDate,
+            Available = roomType.RoomCount - blockedDateCount, // Correct formula: available = totalRooms - blockedRoomCount - number of bookings
+            RoomTypeId = roomType.RoomTypeId,
+        };
+
+        return availability;
+    }
+
+    [HttpPost("{roomTypeId}/availability")]
+    public async Task<ActionResult> BlockRooms(Guid roomTypeId, [FromBody] Availability newAvailability)
+    {
+        if (newAvailability.AvailabilityDate == null) return BadRequest("Date cannot be empty");
+        var blockedDate = await _context.BlockedDates.FirstOrDefaultAsync(x => x.Date == newAvailability.AvailabilityDate);
+        
+        var roomType = await _context.RoomTypes.FirstOrDefaultAsync(rt => rt.RoomTypeId == roomTypeId);
+        if (roomType == null) { return NotFound("Room type not found"); }
+        
+        var roomAvailability = GetAvailability(roomType, (DateTime)newAvailability.AvailabilityDate, blockedDate);
+        var availabilityDiff = roomAvailability?.Available - newAvailability.Available;
+        if(availabilityDiff < 0) return BadRequest("Invalid number of available rooms");
+        
+        if (blockedDate == null)
+        {
+            blockedDate = new BlockedDate()
+            {
+                Date = newAvailability.AvailabilityDate ?? DateTime.Now,
+                RoomTypeId = roomTypeId,
+                Note = "User blocked rooms",
+                RoomCount = 0
+            };
+            _context.BlockedDates.Add(blockedDate);
+        }
+        else
+        {
+            blockedDate.Note = "User modified the number of rooms blocked";
+        }
+        blockedDate.RoomCount += availabilityDiff ?? 0;
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
 
     
     
