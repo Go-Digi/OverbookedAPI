@@ -9,7 +9,6 @@ public class RoomRate
     public string RoomRateName { get; set; } = String.Empty;
     public decimal Price { get; set; }
     
-    [JsonIgnore]
     public RoomType RoomType { get; set; }
 }
     

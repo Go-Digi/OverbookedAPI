@@ -8,6 +8,7 @@ public class Hotel
     
     public List<RoomType> RoomTypes { get; set; }
     public List<User> Users { get; set; }
+    public List<Amenity> Amenities { get; set; }
 
 
 }

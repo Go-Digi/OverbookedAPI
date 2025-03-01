@@ -8,4 +8,5 @@ public class RoomTypeDTO
     public int MaxCapacity { get; set; }
     public int HotelId { get; set; }
     public decimal Price { get; set; }
+    public string AmenityIds { get; set; } = String.Empty;
 }

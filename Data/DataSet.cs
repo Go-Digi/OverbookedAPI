@@ -15,7 +15,8 @@ public class DataSet : DbContext
     public virtual DbSet<RoomType> RoomTypes { get; set; }
     public virtual DbSet<RoomRate> RoomRates { get; set; }
     public virtual DbSet<BlockedDate> BlockedDates { get; set; }
-    
+    public virtual DbSet<Amenity> Amenities { get; set; }
+    public virtual DbSet<RoomAmenity> RoomAmenities { get; set; }
 
 
 
@@ -32,6 +33,11 @@ public class DataSet : DbContext
             .WithOne(g => g.Hotel)
             .HasForeignKey(g => g.HotelId)
             .IsRequired();
+        modelBuilder.Entity<Hotel>()
+            .HasMany(g => g.Amenities)
+            .WithOne(g => g.Hotel)
+            .HasForeignKey(g => g.HotelId)
+            .IsRequired();
         
         // room type model
         modelBuilder.Entity<RoomType>()
@@ -44,12 +50,25 @@ public class DataSet : DbContext
             .WithOne(g => g.RoomType)
             .HasForeignKey(g => g.RoomTypeId)
             .IsRequired();
+        modelBuilder.Entity<RoomType>()
+            .HasMany(g => g.RoomAmenities)
+            .WithOne(g => g.RoomType)
+            .HasForeignKey(g => g.RoomTypeId)
+            .IsRequired();
         
         // user model
         modelBuilder.Entity<User>()
             .HasMany(g => g.UserActivityLogs)
             .WithOne(g => g.User)
             .HasForeignKey(g => g.UserId)
+            .IsRequired();
+        
+        
+        // amenity
+        modelBuilder.Entity<Amenity>()
+            .HasMany(g => g.RoomAmenities)
+            .WithOne(g => g.Amenity)
+            .HasForeignKey(g => g.AmenityId)
             .IsRequired();
     }
 }

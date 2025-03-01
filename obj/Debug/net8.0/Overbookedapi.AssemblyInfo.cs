@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Overbookedapi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9c167020d53bfd929a9f575eb894fb1c3bd2714b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a91a57828e9ddbfba0c4f28e1bf3a4b80031b13d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Overbookedapi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Overbookedapi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

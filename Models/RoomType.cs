@@ -14,4 +14,5 @@ public class RoomType
     public Hotel Hotel { get; set; }
     public List<RoomRate> RoomRates { get; set; } = new();
     public List<BlockedDate> BlockedDates { get; set; } = new();
+    public List<RoomAmenity> RoomAmenities { get; set; } = new();
 }

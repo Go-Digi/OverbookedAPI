@@ -1,9 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Overbookedapi.Models;
 using Overbookedapi.Models.DTO;
 using Overbookedapi.Data;
@@ -67,6 +63,22 @@ public class RoomTypesController : ControllerBase
             Price = newRoomType.Price,
         };
         _context.RoomRates.Add(roomRates);
+
+        if (newRoomType.AmenityIds != String.Empty)
+        {
+            var ids = newRoomType.AmenityIds.Split(",");
+            var roomAmenities = new List<RoomAmenity>();
+            foreach (var amenityId in ids)
+            {
+                var roomAmenity = new RoomAmenity()
+                {
+                    AmenityId = int.Parse(amenityId),
+                    RoomTypeId = roomType.RoomTypeId,
+                };
+                roomAmenities.Add(roomAmenity);
+            }
+            _context.RoomAmenities.AddRange(roomAmenities);
+        }
         
         await _context.SaveChangesAsync();
 
@@ -100,6 +112,43 @@ public class RoomTypesController : ControllerBase
         roomRate.Price = newRoomType.Price;
         _context.RoomRates.Update(roomRate);
         
+        var updatedAmenityIds = newRoomType.AmenityIds.Split(",")
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .Select(int.Parse)
+            .ToList();
+        var existingRoomAmenities = await _context.RoomAmenities.Where(x => x.RoomTypeId == newRoomType.RoomTypeId)
+            .ToListAsync();
+
+        var amenityIdsToAdd = updatedAmenityIds
+            .Except(existingRoomAmenities.Select(x => x.AmenityId))
+            .ToList();
+        
+        var amenityIdsToRemove = existingRoomAmenities
+            .Select(x => x.AmenityId)
+            .Except(updatedAmenityIds)
+            .ToList();
+
+        var roomAmenities = new List<RoomAmenity>();
+        foreach (var id in amenityIdsToAdd)
+        {
+            var roomAmenity = new RoomAmenity()
+            {
+                AmenityId = id,
+                RoomTypeId = roomType.RoomTypeId,
+            };
+            roomAmenities.Add(roomAmenity);
+        }
+        _context.RoomAmenities.AddRange(roomAmenities);
+        
+        roomAmenities = new List<RoomAmenity>();
+        foreach (var id in amenityIdsToRemove)
+        {
+            var roomAmenity = existingRoomAmenities.FirstOrDefault(x => x.AmenityId == id);
+            roomAmenities.Add(roomAmenity);
+        }
+        _context.RoomAmenities.RemoveRange(roomAmenities);
+        
+        
         await _context.SaveChangesAsync();
 
         return Ok();
@@ -121,6 +170,10 @@ public class RoomTypesController : ControllerBase
             return NotFound("Room rate not found");
         }
         _context.RoomRates.Remove(roomRate);
+        
+        var existingRoomAmenities = await _context.RoomAmenities.Where(x => x.RoomTypeId == id)
+            .ToListAsync();
+        _context.RoomAmenities.RemoveRange(existingRoomAmenities);
         
         await _context.SaveChangesAsync();
 
