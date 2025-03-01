@@ -1,11 +1,32 @@
-/bin/Debug
-/obj/Debug
-/obj
-/obj
-.DS_Store
-.DS_Store
+# Ignore Visual Studio and Rider files
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-/obj/Debug/*
-obj/Debug/net8.0/Overbookedapi.AssemblyInfo.cs
+# Ignore Rider workspace files
+*.iml
+*.ipr
+*.iws
 
-/obj/**
+# Ignore build artifacts
+bin/
+obj/
+out/
+*.exe
+*.dll
+*.pdb
+*.cache
+*.log
+*.ilk
+*.map
+*.exp
+*.idb
+*.lib
+*.ncb
+*.sdf
+*.ipch
+*.aps
+*.res
