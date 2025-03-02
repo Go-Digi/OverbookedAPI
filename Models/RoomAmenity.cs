@@ -9,5 +9,5 @@ public class RoomAmenity
     public int AmenityId { get; set; }
     
     [JsonIgnore] public RoomType RoomType { get; set; }
-    [JsonIgnore] public Amenity Amenity { get; set; }
+    public Amenity Amenity { get; set; }
 }

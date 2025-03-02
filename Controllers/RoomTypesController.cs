@@ -29,7 +29,7 @@ public class RoomTypesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<RoomType>> GetRoomType(Guid id)
     {
-        var roomType = await _context.RoomTypes.Include(rt => rt.RoomRates).FirstOrDefaultAsync(rt => rt.RoomTypeId == id);
+        var roomType = await _context.RoomTypes.Include(rt => rt.RoomRates).Include(rt=>rt.RoomAmenities).ThenInclude(ra=>ra.Amenity).FirstOrDefaultAsync(rt => rt.RoomTypeId == id);
 
         if (roomType == null)
         {
