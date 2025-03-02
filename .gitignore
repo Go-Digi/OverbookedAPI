@@ -60,8 +60,8 @@ project.fragment.lock.json
 
 # Folder-specific ignores
 # Exclude folder for build output
-bin/
-obj/
+/bin/
+/obj/
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
