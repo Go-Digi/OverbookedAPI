@@ -1,34 +1,74 @@
-# Common IntelliJ Platform excludes
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]eleases/
+[Rr]eleasesPublic/
+[Oo]utput/
+[Ll]og/
+[Ll]ogs/
 
-# User specific
-**/.idea/**/workspace.xml
-**/.idea/**/tasks.xml
-**/.idea/shelf/*
-**/.idea/dictionaries
-**/.idea/httpRequests/
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
 
-# Sensitive or high-churn files
-**/.idea/**/dataSources/
-**/.idea/**/dataSources.ids
-**/.idea/**/dataSources.xml
-**/.idea/**/dataSources.local.xml
-**/.idea/**/sqlDataSources.xml
-**/.idea/**/dynamic.xml
+# MonoDevelop
+*.userprefs
+
+# Auto-generated files by Visual Studio
+*.ncb
+*.suo
+*.sdf
+*.cache
+*.dbmdl
+*.opendb
+*.pdb
+*.psess
+*.vsp
+*.vsps
+*.vssscc
+*.vssscc
+*.vsix
+*.vsixmanifest
+*.vscode/
+.vscode/
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+*.csproj.user
+
+# Tye
+.tye/
 
 # Rider
-# Rider auto-generates .iml files, and contentModel.xml
-**/.idea/**/*.iml
-**/.idea/**/contentModel.xml
-**/.idea/**/modules.xml
+.idea/
 
+# JetBrains Rider
+.idea/
+
+# Backup files
+*~
+*.bak
+*.tmp
+
+# Folder-specific ignores
+# Exclude folder for build output
+bin/
+obj/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# VS Code settings
+.vscode/
+
+# Other
 *.suo
-*.user
-.vs/
-[Bb]in/
-[Oo]bj/
-_UpgradeReport_Files/
-[Pp]ackages/
-
-Thumbs.db
-Desktop.ini
-.DS_Store
+*.sln.docstates
