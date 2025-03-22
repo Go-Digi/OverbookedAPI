@@ -268,6 +268,73 @@ public class RoomTypesController : ControllerBase
         return Ok();
     }
 
+    [HttpGet("available-room-types")]
+    public async Task<ActionResult<List<Guid>>> GetAvailableRoomTypes([FromQuery] DateTimeOffset startDate, [FromQuery] DateTimeOffset endDate)
+    {
+        if (startDate == default || endDate == default || startDate > endDate)
+        {
+            return BadRequest("Please provide a valid date range.");
+        }
+
+        // Get all room types
+        var roomTypes = await _context.RoomTypes.ToListAsync();
+
+        var availableRoomTypeIds = new List<Guid>();
+
+        foreach (var roomType in roomTypes)
+        {
+            // Get the blocked dates for the given room type within the date range
+            var blockedDates = await _context.BlockedDates
+                .Where(x => x.RoomTypeId == roomType.RoomTypeId &&
+                            x.Date >= startDate.UtcDateTime &&
+                            x.Date <= endDate.UtcDateTime)
+                .ToListAsync();
+
+            // Get reservations for the room type in the date range
+            var reservations = await _context.Reservations
+                .Include(r => r.ReservationRooms)
+                .Where(r => r.ReservationRooms.Any(rr => rr.RoomTypeId == roomType.RoomTypeId) &&
+                            r.CheckInDate < endDate &&
+                            r.CheckOutDate > startDate)
+                .ToListAsync();
+
+            // Calculate availability for each date in the range
+            bool isAvailable = true;
+
+            var totalDays = (endDate - startDate).Days + 1;
+
+            for (int i = 0; i < totalDays; i++)
+            {
+                var currentDate = startDate.UtcDateTime.AddDays(i);
+
+                // Count reserved rooms for that day
+                var reservedRoomCount = reservations
+                    .Where(r => r.CheckInDate.Date <= currentDate.Date && r.CheckOutDate.Date > currentDate.Date)
+                    .SelectMany(r => r.ReservationRooms)
+                    .Where(rr => rr.RoomTypeId == roomType.RoomTypeId)
+                    .Sum(rr => rr.RoomCount);
+
+                // Count blocked rooms for that day
+                var blockedRoomCount = blockedDates
+                    .FirstOrDefault(x => x.Date.Date == currentDate.Date)?.RoomCount ?? 0;
+
+                var availableRooms = roomType.RoomCount - blockedRoomCount - reservedRoomCount;
+
+                if (availableRooms <= 0)
+                {
+                    isAvailable = false;
+                    break;
+                }
+            }
+
+            if (isAvailable)
+            {
+                availableRoomTypeIds.Add(roomType.RoomTypeId);
+            }
+        }
+
+        return Ok(availableRoomTypeIds);
+    }
     [HttpPut("{roomTypeId}")]
     public async Task<ActionResult> ToggleRoomTypeStatus(Guid roomTypeId, [FromQuery] DateTime dateQuery, [FromQuery] bool isOpen)
     {
