@@ -4,6 +4,6 @@ namespace Overbookedapi.Models.DTO;
 public class ReservationCalendar
 {
     public Guid ReservationId { get; set; }
-    public DateTime CheckInDate { get; set; }
-    public DateTime CheckOutDate { get; set; }
+    public DateTimeOffset CheckInDate { get; set; }
+    public DateTimeOffset CheckOutDate { get; set; }
 }

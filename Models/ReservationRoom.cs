@@ -9,6 +9,7 @@ public class ReservationRoom
     public Guid RoomTypeId { get; set; }
     public int RoomRateId { get; set; }
     public Guid ReservationId { get; set; }
+    public int RoomCount { get; set; }
 
     // Navigation properties (assuming relationships exist)
     public virtual RoomType RoomType { get; set; }

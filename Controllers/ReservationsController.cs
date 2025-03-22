@@ -21,7 +21,7 @@ public class ReservationsController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ReservationCalendar>>> GetReservations([FromQuery] DateTime? checkIn, [FromQuery] DateTime? checkOut)
+    public async Task<ActionResult<IEnumerable<ReservationCalendar>>> GetReservations([FromQuery] DateTimeOffset? checkIn, [FromQuery] DateTimeOffset? checkOut)
     {
         if (checkIn == null|| checkOut == null)
         {
@@ -30,8 +30,8 @@ public class ReservationsController : ControllerBase
         
         // should also query only with hotelId
         var reservations = await _context.Reservations
-            .Where(x => x.CheckInDate >= checkIn && 
-                        x.CheckOutDate <= checkOut)
+            .Where(x => x.CheckInDate >= checkIn.Value.UtcDateTime && 
+                        x.CheckOutDate <= checkOut.Value.UtcDateTime)
             .Select(x => new ReservationCalendar()
             {
                 ReservationId = x.ReservationId,
@@ -67,8 +67,8 @@ public class ReservationsController : ControllerBase
         {
             ReservationId = Guid.NewGuid(),
             GuestName = reservationDTO.GuestName,
-            CheckInDate = reservationDTO.CheckInDate,
-            CheckOutDate = reservationDTO.CheckOutDate,
+            CheckInDate = reservationDTO.CheckInDate.UtcDateTime,
+            CheckOutDate = reservationDTO.CheckOutDate.UtcDateTime,
             TotalAmount = reservationDTO.TotalPaymentAmount,
             PaidAmount = reservationDTO.DownpaymentAmount,
             DiscountAmount = reservationDTO.DiscountAmount,
@@ -84,7 +84,8 @@ public class ReservationsController : ControllerBase
             {
                 RoomTypeId = r.RoomTypeId,
                 RoomRateId = r.RoomRateId,
-                ReservationId = reservation.ReservationId
+                ReservationId = reservation.ReservationId,
+                RoomCount = r.RoomCount
             });
         }
 
@@ -120,8 +121,8 @@ public class ReservationsController : ControllerBase
         }
 
         reservation.GuestName = reservationDTO.GuestName;
-        reservation.CheckInDate = reservationDTO.CheckInDate;
-        reservation.CheckOutDate = reservationDTO.CheckOutDate;
+        reservation.CheckInDate = reservationDTO.CheckInDate.UtcDateTime;
+        reservation.CheckOutDate = reservationDTO.CheckOutDate.UtcDateTime;
         reservation.TotalAmount = reservationDTO.TotalPaymentAmount;
         reservation.PaidAmount = reservationDTO.DownpaymentAmount;
         reservation.DiscountAmount = reservationDTO.DiscountAmount;
