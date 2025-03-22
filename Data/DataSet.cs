@@ -17,6 +17,8 @@ public class DataSet : DbContext
     public virtual DbSet<BlockedDate> BlockedDates { get; set; }
     public virtual DbSet<Amenity> Amenities { get; set; }
     public virtual DbSet<RoomAmenity> RoomAmenities { get; set; }
+    public virtual DbSet<Reservation> Reservations { get; set; }
+    public virtual DbSet<ReservationRoom> ReservationRooms { get; set; }
 
 
 
@@ -70,5 +72,20 @@ public class DataSet : DbContext
             .WithOne(g => g.Amenity)
             .HasForeignKey(g => g.AmenityId)
             .IsRequired();
+        
+        modelBuilder.Entity<ReservationRoom>()
+            .HasOne(rr => rr.Reservation)
+            .WithMany(r => r.ReservationRooms)
+            .HasForeignKey(rr => rr.ReservationId);
+
+        modelBuilder.Entity<ReservationRoom>()
+            .HasOne(rr => rr.RoomType)
+            .WithMany()
+            .HasForeignKey(rr => rr.RoomTypeId);
+
+        modelBuilder.Entity<ReservationRoom>()
+            .HasOne(rr => rr.RoomRate)
+            .WithMany()
+            .HasForeignKey(rr => rr.RoomRateId);
     }
 }
