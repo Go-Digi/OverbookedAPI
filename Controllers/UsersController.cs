@@ -69,7 +69,7 @@ public class UsersController : ControllerBase
         _dbContext.Users.Add(newUser);
         await _dbContext.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetUser), new { id = newUser.UserId }, newUser);
+        return Ok($"User with Id {newUser.UserId} has been created.");
     }
 
     // PUT: api/Users/{id}
