@@ -28,7 +28,7 @@ public class UsersController : ControllerBase
     [HttpGet("email/{email}")]
     public async Task<ActionResult<UserRecoil>> GetUser(string email)
     {
-        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
 
         if (user == null)
         {
