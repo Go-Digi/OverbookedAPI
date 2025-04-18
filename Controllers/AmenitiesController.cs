@@ -4,12 +4,14 @@ using Overbookedapi.Models;
 using Overbookedapi.Models.DTO;
 using Overbookedapi.Data;
 using Overbookedapi.Utils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Overbookedapi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AmenitiesController : ControllerBase
+[Authorize]
+public class AmenitiesController : BaseApiController
 {
     private readonly DataSet _context;
     private readonly IUserActivityLogger _userActivityLogger;
